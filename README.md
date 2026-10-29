@@ -3,7 +3,7 @@
 **Name:** Lal Ruata
 **Course / Section:** CST-435 
 **GitHub:** https://github.com/SamRuata/seq-sight
-**Streamlit Cloud (UI):** https://<fill-after-deploy>.streamlit.app
+**Streamlit Cloud (UI):** https://seq-sight-wwtihytkf5xvqysft8wz9f.streamlit.app/
 **Render.com (API):** https://seq-sight-api-usf4.onrender.com — docs at [`/docs`](https://seq-sight-api-usf4.onrender.com/docs), health at [`/healthz`](https://seq-sight-api-usf4.onrender.com/healthz)
 **Supabase project ref:** `ruyydsxkddxiwjttbtaj`
 **Product presentation (video):** https://<fill-after-recording>
