@@ -4,7 +4,7 @@
 **Course / Section:** CST-435 
 **GitHub:** https://github.com/SamRuata/seq-sight
 **Streamlit Cloud (UI):** https://<fill-after-deploy>.streamlit.app
-**Render.com (API):** https://<fill-after-deploy>.onrender.com — docs at [`/docs`](https://<fill-after-deploy>.onrender.com/docs), health at [`/healthz`](https://<fill-after-deploy>.onrender.com/healthz)
+**Render.com (API):** https://seq-sight-api-usf4.onrender.com — docs at [`/docs`](https://seq-sight-api-usf4.onrender.com/docs), health at [`/healthz`](https://seq-sight-api-usf4.onrender.com/healthz)
 **Supabase project ref:** `ruyydsxkddxiwjttbtaj`
 **Product presentation (video):** https://<fill-after-recording>
 **Engineering report:** below, in this README
@@ -163,3 +163,56 @@ The persistence rule follows from who is exposed. The corpus is stored in full: 
 **The uncertainty it hides, and I would rather name than let a user discover:** the softmax probability is not calibrated, so 0.98 is a shape of the output layer and not a frequency. There is no abstain path — every input gets one of two labels, including input the model has no business judging. The attention weights look like reasons and are not. And a single accuracy figure describes IMDB-like text only.
 
 Building this honestly meant reporting that my attention model lost, that its positional encoding made things worse, and that its explanations point at the wrong words. Each of those was a result I could have buried by not running the comparison. Stewardship of a model's uncertainty is mostly the discipline of running the test that could embarrass you, and then publishing what it said.
+
+
+---
+
+## Individual contribution
+
+This product was built solo. Every component below is my own work: schema, data
+loading, both architectures, the API, the interface, the tests, and this report.
+
+**Decisions I made, and why**
+
+- **Matched the parameter counts exactly.** My first attention model was smaller
+  than the LSTM, which would have made any accuracy result ambiguous between
+  mechanism and capacity. I sized the position-wise feed-forward so both models
+  land on 2,692,354 parameters. That control is what lets the report claim the
+  difference is architectural.
+- **Trained locally rather than through `POST /train`.** The template trains
+  inside the API because its dataset is 800 synthetic sequences. A 400-second
+  job on IMDB would exceed Render's free-tier memory and request timeout, so
+  training became a CLI that still reads its corpus from Supabase as the brief
+  requires.
+- **Added a third run nobody asked for.** `attention_no_pos` isolates the
+  positional encoding, and it produced the most surprising result in the
+  project — the encoding *costs* 0.86 accuracy points at this budget. Without
+  that run I would have reported the attention model's score without knowing
+  why it was low.
+- **Reported that my attention model lost.** It is 1.86 points behind the
+  baseline and its heatmaps point at the wrong words. Both findings are in the
+  product, not just the report — the Failure Gallery leads with six confident
+  mistakes.
+- **Cut the sequence window from 200 to 128 tokens** when a training run proved
+  too slow to iterate on, and documented the cost rather than hiding it: most
+  reviews are now truncated, and a review's verdict is often its last sentence.
+
+**Problems I hit and fixed**
+
+The Stanford host for the corpus was unreachable from my network, so the loader
+tries a HuggingFace mirror first and accepts a manually downloaded archive as a
+fallback. Training was initially too slow to iterate on; sorting batches by
+length, raising the batch size and setting PyTorch's thread count brought an
+epoch from minutes to under a minute. A test I wrote to simulate a database
+outage failed, and was right to — the Supabase client was being constructed
+outside the logging try block, so any database problem would have failed every
+prediction. That bug would not have surfaced until the first Render outage.
+
+**Full task list:** Supabase project and row-level security · migration `002`
+(`sequences`, `predictions`, run columns) · IMDB loader with mirror fallback ·
+tokenizer, vocabulary and padding masks · LSTM baseline with packed sequences ·
+hand-written scaled dot-product attention block · attention pooling · training
+CLI reading from Postgres · three trained runs · Failure Gallery precompute ·
+FastAPI service with 10 endpoints and a validation layer · six-tab Streamlit
+client · 45 pytest tests · deployment to Render, Streamlit Cloud and Supabase ·
+model card · dataset card · engineering report · video.
