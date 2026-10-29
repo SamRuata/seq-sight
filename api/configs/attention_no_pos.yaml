@@ -1,0 +1,13 @@
+# Ablation: the same attention model with positional encodings removed, which
+# makes it order-blind. Isolates how much of its score comes from knowing where
+# words are rather than which words are present.
+name: attention_no_pos
+model_type: attention
+embed_dim: 128
+hidden_dim: 128
+dropout: 0.3
+positional: false
+lr: 0.001
+batch_size: 128
+epochs: 5
+seed: 42

@@ -1,0 +1,18 @@
+# Secrets -- never commit
+.env
+.streamlit/
+ui/.streamlit/secrets.toml
+
+# Environment
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Downloaded corpus (84 MB tarball / 40 MB parquet) -- fetched on demand
+data/*.parquet
+data/*.tar.gz
+data/aclImdb*/
+
+# Keep: data/failures.json, models/*.joblib, models/vocab.json, tests/reference.json
+# The Failure Gallery and the API both need these at runtime on the clouds.
