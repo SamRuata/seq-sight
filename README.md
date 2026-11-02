@@ -6,7 +6,7 @@
 **Streamlit Cloud (UI):** https://seq-sight-wwtihytkf5xvqysft8wz9f.streamlit.app/
 **Render.com (API):** https://seq-sight-api-usf4.onrender.com — docs at [`/docs`](https://seq-sight-api-usf4.onrender.com/docs), health at [`/healthz`](https://seq-sight-api-usf4.onrender.com/healthz)
 **Supabase project ref:** `ruyydsxkddxiwjttbtaj`
-**Product presentation (video):** https://<fill-after-recording>
+**Product presentation (video):** https://youtu.be/el2GQOZNZ80
 **Engineering report:** below, in this README
 **Model card:** [`MODEL_CARD.md`](MODEL_CARD.md) · **Dataset card:** [`DATASET_CARD.md`](DATASET_CARD.md)
 
